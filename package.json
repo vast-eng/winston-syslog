@@ -17,7 +17,8 @@
   },
   "devDependencies": {
     "winston": "0.5.x",
-    "vows": "0.6.x"
+    "vows": "0.6.x",
+    "tap": "0.3.x"
   },
   "main": "./lib/winston-syslog",
   "scripts": { "test": "sudo vows test/*-test.js --spec" },
