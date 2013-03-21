@@ -9,11 +9,14 @@ var winston = require('winston'),
 **/
 
 var logger = new (winston.Logger)();
-logger.add( 
-	new (winston.transports.Syslog)({
+var soptions = {
 		facility: "local1",
-		level: "info"
-	}),
+		level: "info",
+		app_name: "foo"
+	};
+
+logger.add( 
+	new (winston.transports.Syslog)(soptions),
 	null, 
 	true
 );
@@ -24,21 +27,20 @@ var logstring = "qwertyuiop",
 	logfile = "/data/local1.log";
 
 
-test("Test syslog", function(t) {
+test("Test syslog info", function(t) {
 
 	t.ok(logger, "logger should have been created.");
 	logger.info(logstring);
+	// console.log(logstring);
 
 	exec('tail -n 1 ' + logfile, function(err, tail, stderr) {
 		
-		t.notOk(err, "Tail. Fail. Whale. Snail.");
+		t.notOk(err, "Tail. Fail. Whale. Female. Snail.");
 
-		t.ok(tail.indexOf(logstring) >= 0, "Insure the logstring is in the file");
+		t.ok(tail.indexOf(logstring) >= 0, "Ensure the logstring is in the entry");
+		t.ok(tail.indexOf(soptions.app_name) >= 0, "Ensure the app_name is in the entry");
 
 		t.end();
 	});
 
 });
-
-
-
